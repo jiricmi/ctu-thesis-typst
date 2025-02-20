@@ -38,7 +38,7 @@
   ]
 
   b(63.5mm)[
-    #image("./res/symbol_cvut_konturova_verze_cb.svg")
+    #image("./res/symbol_cvut_konturova_verze_cb.svg", width: 142pt)
   ]
 
   b(131.5mm, size: 12.5pt)[
