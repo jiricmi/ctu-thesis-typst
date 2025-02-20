@@ -61,22 +61,22 @@
     v(8pt)
   }
 
-  import "@preview/outrageous:0.1.0"
-  set outline(indent: true)
-  show outline.entry: outrageous.show-entry.with(
-    font: (none, none),
+  set outline(indent: 1em)
+  // make gaps between outline dots larger
+  set outline.entry(fill: repeat([.], gap: 0.5em))
+  // only show fill dots for lower-level headings
+  show outline.entry.where(level: 1): set outline.entry(fill: none)
+  show outline.entry.where(level: 1): it => {
     // very hacky way to format appendices differently
     // there's gotta be a better way, but I don't see it
-    body-transform: (lvl, body) => {
-      if "children" in body.fields() {
-        let (num, ..text) = body.children
-        if regex("^[A-Z]$") in num.text {
-          return "Appendix " + num + ": " + text.join()
-        }
-      }
-      body
-    }
-  )
+    let is_appendix = it.prefix() != none and regex("^[A-Z]$") in it.prefix().text
+    let prefix = if is_appendix {"Appendix" + " " + it.prefix() + ":"} else {it.prefix()}
+
+    set block(above: 1.1em)
+    text(weight: "bold")[
+      #link(it.element.location(), it.indented(prefix, it.inner()))
+    ]
+  }
 
   set heading(numbering: "1.1")
   show heading.where(level: 1): it => {
