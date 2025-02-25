@@ -21,6 +21,7 @@
 
   // set to true if generating a PDF for print (shifts page layout, turns code blocks greyscale, correctly aligns odd/even pages,...)
   print: false,
+  lang: "en", // set cs for czech version
   submission-date: datetime(year: 2012, month: 1, day: 21),
 
 
