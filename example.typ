@@ -8,7 +8,6 @@
       email: "someone@fel.cvut.cz",
       url: "https://my.project/url",
     ),
-    submission-date: datetime(year: 2012, month: 1, day: 21),
 
     // true for bachelor's thesis, false for master's thesis
     bachelor: false,
@@ -22,6 +21,8 @@
 
   // set to true if generating a PDF for print (shifts page layout, turns code blocks greyscale, correctly aligns odd/even pages,...)
   print: false,
+  submission-date: datetime(year: 2012, month: 1, day: 21),
+
 
   abstract-en: [
     #lorem(40)

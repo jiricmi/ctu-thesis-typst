@@ -9,11 +9,10 @@
 
 #import "./front.typ": *
 
-#let template(meta: (), print: false, ..intro-args, body) = {
+#let template(meta: (), print: false, submission-date: datetime.today(), ..intro-args, body) = {
   set document(
     author: meta.author.name,
-    title: meta.title, date:
-    meta.submission-date
+    title: meta.title, date: submission-date
   )
   set text(font: "Libertinus Serif", size: 11pt, lang: "en", fallback: false)
 
@@ -124,7 +123,7 @@
   }
 
   
-  introduction(print, meta.submission-date, ..intro-args)
+  introduction(print, submission-date, ..intro-args)
 
   // start numbering from the first page of actual text
   set page(numbering: "1")
