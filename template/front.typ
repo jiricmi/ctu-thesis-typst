@@ -1,5 +1,41 @@
+#let translations = (
+  "cs": (
+    "thesis-bachelor": "Bakalářská práce",
+    "thesis-master": "Diplomová práce",
+    "supervisor": "Vedoucí práce",
+    "study-programme": "Studijní program",
+    "branch-of-study": "Obor studia",
+    "acknowledgement": "Poděkování",
+    "declaration": "Prohlášení",
+    "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval/a samostatně a že jsem uvedl/a veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.",
+    "prague": "v Praze",
+    "abstract": "Abstrakt",
+    "cvut": "České Vysoké Učení Technické v praze"
+  ),
+  "en": (
+    "thesis-bachelor": "Bachelor's Thesis",
+    "thesis-master": "Master's Thesis",
+    "supervisor": "Supervisor",
+    "study-programme": "Study programme",
+    "branch-of-study": "Branch of study",
+    "acknowledgement": "Acknowledgement",
+    "declaration": "Declaration",
+    "declaration-text": "I declare that the presented work was developed independently and that I have listed all sources of information used within it in accordance with the methodical instructions for observing the ethical principles in the preparation of university theses.",
+    "prague": "In Prague",
+    "abstract": "Abstract",
+    "cvut": "Czech Technical University in Prague"
+  )
+)
+
+#let localized(key, lang) = {
+  let translation = translations.at(lang)
+    translation.at(key)
+  }
+}
+
 #let title-page(
   print,
+  lang,
   title: "",
   author: (
     name: "",
@@ -32,7 +68,7 @@
   }
 
   b(33mm)[
-    Czech Technical University in Prague \
+    #localized("cvut", lang)\
     #faculty \
     #department
   ]
@@ -43,9 +79,9 @@
 
   b(131.5mm, size: 12.5pt)[
     #if bachelor [
-      Bachelor's Thesis
+      #localized("thesis-bachelor", lang)
     ] else [
-      Master's Thesis
+      #localized("thesis-master", lang)
     ]
   ]
 
@@ -61,10 +97,10 @@
     #link(author.url)
   ])
 
-  b(210mm)[Supervisor: #supervisor]
+  b(210mm)[#localized("supervisor", lang): #supervisor]
 
-  b(235.2mm)[Study programme: #study-programme]
-  b(241.2mm)[Branch of study: #branch-of-study]
+  b(235.2mm)[#localized("study-programme", lang): #study-programme]
+  b(241.2mm)[#localized("branch-of-study", lang): #branch-of-study]
   
   b(254.3mm)[#submission-date.display("[month repr:long] [year]")]
 }
@@ -72,12 +108,10 @@
 
 #let abstract-page(
   submission-date,
+  lang,
   abstract-en: [],
   abstract-cz: [],
   acknowledgement: [],
-  declaration: [
-    I declare that the presented work was developed independently and that I have listed all sources of information used within it in accordance with the methodical instructions for observing the ethical principles in the preparation of university theses.
-  ]
 ) = {
   // render as a separate page; add room at the bottom for TODOs and notes
   show: page.with(margin: (bottom: 0mm))
@@ -93,12 +127,12 @@
   // no idea why there is a margin here
   v(-30.2pt)
   [
-    = Abstract
+    = #localized("abstract", "en")
     #abstract-en
   ]
   
   [
-    = Abstrakt (CZ)
+    = #localized("abstract", "cs") (CZ)
     #abstract-cz
   ]
 
@@ -106,16 +140,16 @@
   //v(-6pt)
   grid(columns: (47.5%, 47.5%), gutter: 5%,
     [
-      = Acknowledgement
+      = #localized("acknowledgement", lang)
       #set text(style: "italic")
       #acknowledgement
     ],
   
     [
-      = Declaration
-      #declaration
+      = #localized("declaration", lang)
+      #localized("declaration-text", lang)
       
-      In Prague, #submission-date.display("[day]. [month]. [year]")
+        #localized("prague", lang), #submission-date.display("[day]. [month]. [year]")
 
       #v(2em)
       #repeat[.]
@@ -146,7 +180,7 @@
 }
 
 
-#let introduction(print, ..args) = {
+#let introduction(print, submission-date, lang, ..args) = {
   // hide empty pages from web version
   if print {
     // assignment must be on a single sheet from both sides
@@ -160,7 +194,7 @@
   if print {
     pagebreak(to: "odd", weak: true)
   }
-  abstract-page(..args)
+  abstract-page(submission-date, lang, ..args)
 
   if print {
     // outline should be on the right, but the outline title has a pagebreak
