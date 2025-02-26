@@ -7,7 +7,8 @@
     "branch-of-study": "Obor studia",
     "acknowledgement": "Poděkování",
     "declaration": "Prohlášení",
-    "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval/a samostatně a že jsem v ní uvedl/a všechny použité informační zdroje v souladu s metodickými pokyny pro dodržování etických zásad při zpracování vysokoškolských prací.",
+    "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval samostatně a že jsem uvedl veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.
+    Beru na vědomí, že se na moji práci vztahují práva a povinnosti vyplývající ze zákona č. 121/2000 Sb., autorského zákona, ve znění pozdějších předpisů. v souladu s ust. § 2373 odst. 2 zákona č. 89/2012 Sb., občanský zákoník, ve znění pozdějších předpisů, tímto uděluji nevýhradní oprávnění (licenci) k užití této mojí práce, a to včetně všech počítačových programů, jež jsou její součástí či přílohou a veškeré jejich dokumentace (dále souhrnně jen „Dílo“), a to všem osobám, které si přejí Dílo užít. Tyto osoby jsou oprávněny Dílo užít jakýmkoli způsobem, který nesnižuje hodnotu Díla a za jakýmkoli účelem (včetně užití k výdělečným účelům). Toto oprávnění je časově, teritoriálně i množstevně neomezené.",
     "prague": "v Praze",
     "abstract": "Abstrakt",
     "cvut": "České Vysoké Učení Technické v praze"
@@ -114,47 +115,63 @@
   acknowledgement: [],
 ) = {
   // render as a separate page; add room at the bottom for TODOs and notes
-  show: page.with(margin: (bottom: 0mm))
+  set page(numbering: "i")
+  counter(page).update(3)
   
-  set heading(outlined: false, bookmarked: false)
+  set heading(
+    outlined: false,
+    bookmarked: false,
+  )
+  show heading: it => [
+    #set text(font: "Technika" ,fill: blue)
+    #it.body
+  ]
+
   // pretty hacky way to disable the implicit linebreak in my heading style
   show heading: it => {
     show pagebreak: it => {linebreak()}
-    block(it)
-    //block(it, above: 2pt)
+    block(it, above: 2pt)
   }
-
-  // no idea why there is a margin here
-  v(-30.2pt)
-  [
-    = #localized("abstract", "en")
-    #abstract-en
-  ]
   
-  [
-    = #localized("abstract", "cs") (CZ)
-    #abstract-cz
-  ]
+  grid(
+    columns: (10fr, 1fr, 10fr),
+    gutter: 5pt,
+    [
+    #align(right)[
+      = #localized("abstract", "en")
+    ]
+      #abstract-en
+    ],
+    align(center, 
+[
+        #rect(width: 50%, height: 100%, fill: blue)
+      ]
+    ),
+      
+    [
+      = #localized("abstract", "cs")
+      #abstract-cz
+    ],
+  )
 
   v(6.6pt)
   //v(-6pt)
-  grid(columns: (47.5%, 47.5%), gutter: 5%,
-    [
+    align(horizon)[
       = #localized("acknowledgement", lang)
       #set text(style: "italic")
       #acknowledgement
-    ],
+    ]
+
+    pagebreak(weak: false)
   
-    [
-      = #localized("declaration", lang)
-      #localized("declaration-text", lang)
+    align(bottom)[
+     #align(right)[
+        = #localized("declaration", lang)
+     ]
+      #localized("declaration-text", lang) 
       
         #localized("prague", lang), #submission-date.display("[day]. [month]. [year]")
-
-      #v(2em)
-      #repeat[.]
-    ],
-  )
+    ]
 
   context {
     set text(size: 15pt, weight: "bold")
@@ -200,7 +217,12 @@
     // outline should be on the right, but the outline title has a pagebreak
     pagebreak(to: "even")
   }
-  outline(depth: 2)
+
+  show heading: it => [
+    #set text(font: "Technika" ,fill: blue)
+    #it.body
+  ]
+  outline(depth: 3)
 
   pagebreak(weak: true)
 }

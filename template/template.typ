@@ -31,6 +31,8 @@
 
   // render title page before configuring the rest, which we don't use
   title-page(print, lang, ..meta)
+
+  introduction(print, submission-date, lang, ..intro-args)
   
   set par(justify: true)
 
@@ -79,34 +81,58 @@
 
   set heading(numbering: "1.1")
   show heading.where(level: 1): it => {
-    // TODO: it is better to have a weak page break here, but currently,
-    //  Typst seems to have a bug: https://github.com/typst/typst/issues/2841
     pagebreak(weak: false)
 
     show: block
 
     let use-supplement = it.outlined and it.numbering != none
+    grid(
+    columns:2,
+    gutter: 5pt,
     if (use-supplement) {
-      text(size: 13pt, fill: rgb(120, 120, 120))[
-        #it.supplement #counter(heading).display(it.numbering)
-      ]
-      linebreak()
-      v(-16pt)
-    }
-    
-    text(size: 22pt, weight: "medium")[
-      #it.body
-    ]
+    rect(height:55pt, width: 5pt, fill: blue)
+    },
+    [
+        #if (use-supplement) {
+              text(size: 13pt,)[
+                #it.supplement #counter(heading).display(it.numbering)
+              ]
+          linebreak()
+          v(-10pt)
+        }
+        
+                #text(size: 25pt, weight: "bold", fill: blue,)[
+          #it.body
+        ]
 
-    if (use-supplement) {
-      v(22pt)
-    } else {
-      v(5.5pt)
-    }
+        #if (use-supplement) {
+          v(22pt)
+        } else {
+          v(5.5pt)
+        }
+    ]
+    )
   }
 
   show heading.where(level: 2): it => {
-    block(it, below: 11pt)
+    grid(
+        columns: 2,
+        gutter: 5pt,
+        align: horizon,
+        rect(height: 10pt, width: 10pt, fill: blue),
+            text()[#it],
+    )
+
+  }
+  show heading.where(level: 3): it => {
+    grid(
+        columns: 2,
+        gutter: 5pt,
+        align: horizon,
+        rect(height: 10pt, width: 10pt, fill: blue),
+            text()[#it],
+    )
+
   }
 
   // TODO: probably find a style that has footnotes, but also a usable
@@ -129,7 +155,6 @@
   }
 
   
-  introduction(print, submission-date, lang, ..intro-args)
 
   // start numbering from the first page of actual text
   set page(numbering: "1")
