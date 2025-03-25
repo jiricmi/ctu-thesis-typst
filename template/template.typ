@@ -63,6 +63,8 @@
   }
 
   set outline(indent: 1em)
+
+  set par(justify: true, spacing: 0.6em, first-line-indent:(amount: 1em, all: true))
   // make gaps between outline dots larger
   set outline.entry(fill: repeat([.], gap: 0.5em))
   // only show fill dots for lower-level headings
@@ -93,6 +95,8 @@
     rect(height:55pt, width: 5pt, fill: blue)
     },
     [
+
+            #set par(justify: false, spacing: 1em, first-line-indent:0em)
         #if (use-supplement) {
               text(size: 13pt,)[
                 #it.supplement #counter(heading).display(it.numbering)

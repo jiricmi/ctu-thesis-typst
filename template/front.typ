@@ -132,6 +132,8 @@
     block(it, above: 2pt)
   }
   
+  set par(justify: true, spacing: 0.6em, first-line-indent:(amount: 1em, all: true))
+
   grid(
     columns: (10fr, 1fr, 10fr),
     gutter: 5pt,
