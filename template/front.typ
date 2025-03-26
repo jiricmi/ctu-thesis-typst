@@ -10,7 +10,7 @@
     "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval/a samostatně a že jsem uvedl/a veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.",
     "prague": "v Praze",
     "abstract": "Abstrakt",
-    "cvut": "České Vysoké Učení Technické v praze"
+    "cvut": [#text("České vysoké učení")~#text("technické v")~#text("Praze")]
   ),
   "en": (
     "thesis-bachelor": "Bachelor's Thesis",
@@ -56,8 +56,6 @@
   let inside-margin = if print {8mm} else {0mm}
   show: page.with(margin: (top: 0mm, bottom: 0mm, inside: inside-margin, outside: 0mm))
 
-  set align(center)
-  set place(center)
   set text(font: "Technika", weight: "extralight", size: 10.3pt, fallback: false)
 
   // shorthand to vertically position elements
@@ -66,43 +64,60 @@
     set text(weight: weight) if weight != none
     place(dy: dy, text(content))
   }
+  grid(
+    columns: (1.5fr, 10fr),
+    gutter: 10pt,
+    [
+        
+        #v(30mm)
+        #align(right)[
+            #rect(width: 15%, height: 80%, fill: blue)
+        ]
+    ],
+    [
+        #align(left)[
+            #b(33mm, size: 12.5pt, weight: "medium")[
+                #if bachelor [
+                    #localized("thesis-bachelor", lang)
+                ] else [
+                    #localized("thesis-master", lang)
+                ]
 
-  b(33mm)[
-    #localized("cvut", lang)\
-    #faculty \
-    #department
-  ]
+                
+            ]
+            #b(35mm)[
+                #grid(columns: (3.5fr, 2fr, 10fr), [
+                    #image("./res/symbol_cvut_konturova_verze_cb.svg", width: 110pt)
+                ],
+                [
+                  #v(10mm)
+                #text(size: 16pt, weight: "medium", fill: blue)[#localized("cvut", lang)]
+                ])
+            ]
+            #b(78mm)[
+                #grid(columns: (3.5fr,5fr,7fr), [
+                #text(size: 32pt, weight: "medium", fill: blue)[F3]
 
-  b(63.5mm)[
-    #image("./res/symbol_cvut_konturova_verze_cb.svg", width: 142pt)
-  ]
+                ],
+                [
+                #text(size: 10.5pt, weight: "medium")[#faculty\ #department]
+                ])
+            ]
 
-  b(131.5mm, size: 12.5pt)[
-    #if bachelor [
-      #localized("thesis-bachelor", lang)
-    ] else [
-      #localized("thesis-master", lang)
-    ]
-  ]
-
-  b(140.7mm, size: 14.8pt, weight: "regular")[
-    #title
-  ]
+        #b(140.7mm, size: 18pt, weight: "regular")[
+            #text(fill: blue)[#title]
+        ]
   
-  b(154.25mm, [
-    #text(size: 12.5pt, style: "italic")[#author.name] \
-
-    \
-    #author.email \
-    #link(author.url)
-  ])
-
-  b(210mm)[#localized("supervisor", lang): #supervisor]
-
-  b(235.2mm)[#localized("study-programme", lang): #study-programme]
-  b(241.2mm)[#localized("branch-of-study", lang): #branch-of-study]
-  
-  b(254.3mm)[#submission-date.display("[month repr:long] [year]")]
+        #b(164.25mm, [
+            #text(size: 14.5pt, weight: "medium")[#author.name] \
+        ])
+        #b(252mm)[
+            #text(size: 10.5pt, weight: "medium")[#localized("supervisor", lang): #supervisor \
+            #localized("study-programme", lang): #study-programme \
+            #submission-date.display("[month repr:long] [year]")]
+        ]
+]
+])
 }
 
 
