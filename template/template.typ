@@ -32,8 +32,11 @@
   // render title page before configuring the rest, which we don't use
   title-page(print, lang, ..meta)
 
-  introduction(print, submission-date, lang, ..intro-args)
-  
+  if not meta.diff_usage [
+    #introduction(print, submission-date, lang, ..intro-args)
+  ] else [
+
+]
   set par(justify: true)
 
   set line(length: 100%, stroke: 1pt + luma(200))

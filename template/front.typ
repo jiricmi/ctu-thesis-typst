@@ -23,8 +23,7 @@
     "declaration-text": "I declare that the presented work was developed independently and that I have listed all sources of information used within it in accordance with the methodical instructions for observing the ethical principles in the preparation of university theses.",
     "prague": "In Prague",
     "abstract": "Abstract",
-    "cvut": "Czech Technical University in Prague"
-  )
+    "cvut":[#text("Czech Technical University in")~#text("Prague")])
 )
 
 #let localized(key, lang) = {
@@ -44,6 +43,7 @@
   ),
   submission-date: datetime.today(),
   bachelor: false,
+  diff_usage: false,
   supervisor: "",
   faculty: "",
   department: "",
@@ -77,11 +77,13 @@
     [
         #align(left)[
             #b(33mm, size: 12.5pt, weight: "medium")[
-                #if bachelor [
-                    #localized("thesis-bachelor", lang)
-                ] else [
-                    #localized("thesis-master", lang)
-                ]
+                #if not diff_usage [
+                    #if bachelor [
+                        #localized("thesis-bachelor", lang)
+                    ] else [
+                        #localized("thesis-master", lang)
+                    ]
+                ]   
 
                 
             ]
