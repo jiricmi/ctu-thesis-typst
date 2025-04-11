@@ -150,27 +150,14 @@
   }
   
   set par(justify: true, spacing: 0.6em, first-line-indent:(amount: 1em, all: true))
-
-  grid(
-    columns: (10fr, 1fr, 10fr),
-    gutter: 5pt,
-    [
-    #align(right)[
-      = #localized("abstract", "en")
-    ]
-      #abstract-en
-    ],
-    align(center, 
-[
-        #rect(width: 50%, height: 100%, fill: blue)
-      ]
-    ),
-      
-    [
-      = #localized("abstract", "cs")
-      #abstract-cz
-    ],
-  )
+  [
+    = #localized("abstract", "cs")
+    #abstract-cz
+    #pagebreak()
+    = #localized("abstract", "en")
+    #abstract-en
+    #pagebreak()
+  ]
 
   v(6.6pt)
   //v(-6pt)
