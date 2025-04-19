@@ -141,6 +141,16 @@
     )
 
   }
+  show heading.where(level: 4): it => {
+    grid(
+        columns: 2,
+        gutter: 5pt,
+        align: horizon,
+        rect(height: 10pt, width: 10pt, fill: blue),
+            text()[#it.body],
+    )
+
+  }
 
   // TODO: probably find a style that has footnotes, but also a usable
   //  consistent indexing
