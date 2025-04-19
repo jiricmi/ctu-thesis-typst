@@ -10,6 +10,10 @@
     "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval/a samostatně a že jsem uvedl/a veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.",
     "prague": "v Praze",
     "abstract": "Abstrakt",
+    "abbrs": "Seznam zkratek",
+    "images": "Seznam obrázků",
+    "code": "Seznam úryvků kódu",
+    "tables": "Seznam tabulek",
     "cvut": [#text("České vysoké učení")~#text("technické v")~#text("Praze")]
   ),
   "en": (
@@ -23,6 +27,10 @@
     "declaration-text": "I declare that the presented work was developed independently and that I have listed all sources of information used within it in accordance with the methodical instructions for observing the ethical principles in the preparation of university theses.",
     "prague": "In Prague",
     "abstract": "Abstract",
+    "abbrs": "List of Abbreviations",
+    "tables": "List of Tables",
+    "code": "List of Code Listings",
+    "images": "Table of Figures",
     "cvut":[#text("Czech Technical University in")~#text("Prague")])
 )
 
@@ -49,6 +57,7 @@
   department: "",
   study-programme: "",
   branch-of-study: "",
+  abbrs: (),
 ) = {
   // render as a separate page
   // inner margin is 8mm due to binding loss, but without
@@ -201,8 +210,26 @@
   }
 }
 
+#let list_abbr(print, lang, abbrs) = {
+  set heading(
+    outlined: false,
+    bookmarked: false,
+  )
+  [= #localized("abbrs", lang)]
 
-#let introduction(print, submission-date, lang, ..args) = {
+  table(
+    columns: 2,
+    gutter: 2pt,
+    stroke:none,
+    align: (right, left),
+    ..for (k, v) in abbrs {
+      ([#k], v)
+    }
+  )
+}
+
+
+#let introduction(print, submission-date, lang, abbrs, ..args) = {
   // hide empty pages from web version
   if print {
     // assignment must be on a single sheet from both sides
@@ -230,4 +257,11 @@
   outline(depth: 3)
 
   pagebreak(weak: true)
+  outline(title: localized("images", lang), target: figure.where(kind: image))
+  outline(title: localized("tables", lang), target: figure.where(kind: table))
+  outline(title: localized("code", lang), target: figure.where(kind: raw))
+
+  pagebreak(weak: true)
+  list_abbr(print, lang, abbrs)
+
 }

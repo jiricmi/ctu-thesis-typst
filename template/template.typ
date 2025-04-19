@@ -33,7 +33,7 @@
   title-page(print, lang, ..meta)
 
   if not meta.diff_usage [
-    #introduction(print, submission-date, lang, ..intro-args)
+    #introduction(print, submission-date, lang, meta.abbrs, ..intro-args)
   ] else [
 
 ]
@@ -152,10 +152,6 @@
 
   }
 
-  // TODO: probably find a style that has footnotes, but also a usable
-  //  consistent indexing
-  //set cite(style: "chicago-notes")
-
   let bibliography-title = if lang == "cs" {
         "Citace"
     } else {
@@ -198,3 +194,4 @@
   counter("note").step()
   [#block(fill: yellow, width: 100%, inset: 3pt, radius: 3pt)[NOTE: #msg]]
 }
+
