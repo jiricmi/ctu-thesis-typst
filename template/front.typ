@@ -5,6 +5,7 @@
     "supervisor": "Vedoucí práce",
     "study-programme": "Studijní program",
     "branch-of-study": "Obor studia",
+    "specialization": "Specializace",
     "acknowledgement": "Poděkování",
     "declaration": "Prohlášení",
     "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval/a samostatně a že jsem uvedl/a veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.",
@@ -22,6 +23,7 @@
     "supervisor": "Supervisor",
     "study-programme": "Study programme",
     "branch-of-study": "Branch of study",
+    "specialization": "Specialization",
     "acknowledgement": "Acknowledgement",
     "declaration": "Declaration",
     "declaration-text": "I declare that the presented work was developed independently and that I have listed all sources of information used within it in accordance with the methodical instructions for observing the ethical principles in the preparation of university theses.",
@@ -57,6 +59,7 @@
   department: "",
   study-programme: "",
   branch-of-study: "",
+  study-spec: "",
   abbrs: (),
 ) = {
   // render as a separate page
@@ -122,10 +125,11 @@
         #b(164.25mm, [
             #text(size: 14.5pt, weight: "medium")[#author.name] \
         ])
-        #b(252mm)[
+        #b(248mm)[
             #text(size: 10.5pt, weight: "medium")[#localized("supervisor", lang): #supervisor \
             #localized("study-programme", lang): #study-programme \
-            #submission-date.display("[month repr:long] [year]")]
+                    #localized("specialization", lang): #study-spec \
+            #submission-date.display("[year]")]
         ]
 ]
 ])
