@@ -67,6 +67,7 @@
 
   set outline(indent: 1em)
 
+
   set par(justify: true, spacing: 0.6em, first-line-indent:(amount: 1em, all: true))
   // make gaps between outline dots larger
   set outline.entry(fill: repeat([.], gap: 0.5em))
@@ -152,16 +153,8 @@
 
   }
 
-  let bibliography-title = if lang == "cs" {
-        "Citace"
-    } else {
-        "Bibliography"
-    }
-  
   set bibliography(style: "ieee", title: none)
   show bibliography: it => {
-    heading(bibliography-title)
-
     set text(size: 9pt)
     set par(justify: false)
     columns(2, it)
@@ -179,8 +172,11 @@
 
 // call this function after bibliography using an `everything show` rule:
 //   #show: start-appendix
-#let start-appendix(body) = {
-  set heading(supplement: "Appendix", numbering: "A.1")
+#let start-appendix(lang: "en", body) = {
+  set heading(supplement: {
+      if lang == "cs" { "Příloha" }
+      else { "Appendix" }
+    }, numbering: "A.1")
   counter(heading).update(0)
   body
 }
