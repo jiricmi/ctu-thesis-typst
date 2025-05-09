@@ -31,7 +31,12 @@
 
   // render title page before configuring the rest, which we don't use
   title-page(print, lang, ..meta)
-  
+
+  if not meta.diff_usage [
+    #introduction(print, submission-date, lang, meta.abbrs, ..intro-args)
+  ] else [
+
+]
   set par(justify: true)
 
   set line(length: 100%, stroke: 1pt + luma(200))
@@ -61,6 +66,9 @@
   }
 
   set outline(indent: 1em)
+
+
+  set par(justify: true, spacing: 0.6em, first-line-indent:(amount: 1em, all: true))
   // make gaps between outline dots larger
   set outline.entry(fill: repeat([.], gap: 0.5em))
   // only show fill dots for lower-level headings
@@ -79,57 +87,80 @@
 
   set heading(numbering: "1.1")
   show heading.where(level: 1): it => {
-    // TODO: it is better to have a weak page break here, but currently,
-    //  Typst seems to have a bug: https://github.com/typst/typst/issues/2841
     pagebreak(weak: false)
 
     show: block
 
     let use-supplement = it.outlined and it.numbering != none
+    grid(
+    columns:2,
+    gutter: 5pt,
     if (use-supplement) {
-      text(size: 13pt, fill: rgb(120, 120, 120))[
-        #it.supplement #counter(heading).display(it.numbering)
-      ]
-      linebreak()
-      v(-16pt)
-    }
-    
-    text(size: 22pt, weight: "medium")[
-      #it.body
-    ]
+    rect(height:55pt, width: 5pt, fill: blue)
+    },
+    [
 
-    if (use-supplement) {
-      v(22pt)
-    } else {
-      v(5.5pt)
-    }
+            #set par(justify: false, spacing: 1em, first-line-indent:0em)
+        #if (use-supplement) {
+              text(size: 13pt,)[
+                #it.supplement #counter(heading).display(it.numbering)
+              ]
+          linebreak()
+          v(-10pt)
+        }
+        
+                #text(size: 25pt, weight: "bold", fill: blue,)[
+          #it.body
+        ]
+
+        #if (use-supplement) {
+          v(22pt)
+        } else {
+          v(5.5pt)
+        }
+    ]
+    )
   }
 
   show heading.where(level: 2): it => {
-    block(it, below: 11pt)
+    grid(
+        columns: 2,
+        gutter: 5pt,
+        align: horizon,
+        rect(height: 10pt, width: 10pt, fill: blue),
+            text()[#it],
+    )
+
+  }
+  show heading.where(level: 3): it => {
+    grid(
+        columns: 2,
+        gutter: 5pt,
+        align: horizon,
+        rect(height: 10pt, width: 10pt, fill: blue),
+            text()[#it],
+    )
+
+  }
+  show heading.where(level: 4): it => {
+    grid(
+        columns: 2,
+        gutter: 5pt,
+        align: horizon,
+        rect(height: 10pt, width: 10pt, fill: blue),
+            text()[#it.body],
+    )
+
   }
 
-  // TODO: probably find a style that has footnotes, but also a usable
-  //  consistent indexing
-  //set cite(style: "chicago-notes")
-
-  let bibliography-title = if lang == "cs" {
-        "Citace"
-    } else {
-        "Bibliography"
-    }
-  
   set bibliography(style: "ieee", title: none)
   show bibliography: it => {
-    heading(bibliography-title)
-
     set text(size: 9pt)
     set par(justify: false)
     columns(2, it)
   }
 
   
-  introduction(print, submission-date, lang, ..intro-args)
 
   // start numbering from the first page of actual text
   set page(numbering: "1")
@@ -141,8 +172,11 @@
 
 // call this function after bibliography using an `everything show` rule:
 //   #show: start-appendix
-#let start-appendix(body) = {
-  set heading(supplement: "Appendix", numbering: "A.1")
+#let start-appendix(lang: "en", body) = {
+  set heading(supplement: {
+      if lang == "cs" { "Příloha" }
+      else { "Appendix" }
+    }, numbering: "A.1")
   counter(heading).update(0)
   body
 }
@@ -156,3 +190,4 @@
   counter("note").step()
   [#block(fill: yellow, width: 100%, inset: 3pt, radius: 3pt)[NOTE: #msg]]
 }
+

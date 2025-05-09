@@ -5,12 +5,17 @@
     "supervisor": "Vedoucí práce",
     "study-programme": "Studijní program",
     "branch-of-study": "Obor studia",
+    "specialization": "Specializace",
     "acknowledgement": "Poděkování",
     "declaration": "Prohlášení",
     "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval/a samostatně a že jsem uvedl/a veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.",
     "prague": "v Praze",
     "abstract": "Abstrakt",
-    "cvut": "České Vysoké Učení Technické v praze"
+    "abbrs": "Seznam zkratek",
+    "images": "Seznam obrázků",
+    "code": "Seznam úryvků kódu",
+    "tables": "Seznam tabulek",
+    "cvut": [#text("České vysoké učení")~#text("technické v")~#text("Praze")]
   ),
   "en": (
     "thesis-bachelor": "Bachelor's Thesis",
@@ -18,13 +23,17 @@
     "supervisor": "Supervisor",
     "study-programme": "Study programme",
     "branch-of-study": "Branch of study",
+    "specialization": "Specialization",
     "acknowledgement": "Acknowledgement",
     "declaration": "Declaration",
     "declaration-text": "I declare that the presented work was developed independently and that I have listed all sources of information used within it in accordance with the methodical instructions for observing the ethical principles in the preparation of university theses.",
     "prague": "In Prague",
     "abstract": "Abstract",
-    "cvut": "Czech Technical University in Prague"
-  )
+    "abbrs": "List of Abbreviations",
+    "tables": "List of Tables",
+    "code": "List of Code Listings",
+    "images": "Table of Figures",
+    "cvut":[#text("Czech Technical University in")~#text("Prague")])
 )
 
 #let localized(key, lang) = {
@@ -44,11 +53,14 @@
   ),
   submission-date: datetime.today(),
   bachelor: false,
+  diff_usage: false,
   supervisor: "",
   faculty: "",
   department: "",
   study-programme: "",
   branch-of-study: "",
+  study-spec: "",
+  abbrs: (),
 ) = {
   // render as a separate page
   // inner margin is 8mm due to binding loss, but without
@@ -56,8 +68,6 @@
   let inside-margin = if print {8mm} else {0mm}
   show: page.with(margin: (top: 0mm, bottom: 0mm, inside: inside-margin, outside: 0mm))
 
-  set align(center)
-  set place(center)
   set text(font: "Technika", weight: "extralight", size: 10.3pt, fallback: false)
 
   // shorthand to vertically position elements
@@ -66,43 +76,63 @@
     set text(weight: weight) if weight != none
     place(dy: dy, text(content))
   }
+  grid(
+    columns: (1.5fr, 10fr),
+    gutter: 10pt,
+    [
+        
+        #v(30mm)
+        #align(right)[
+            #rect(width: 15%, height: 80%, fill: blue)
+        ]
+    ],
+    [
+        #align(left)[
+            #b(33mm, size: 12.5pt, weight: "medium")[
+                #if not diff_usage [
+                    #if bachelor [
+                        #localized("thesis-bachelor", lang)
+                    ] else [
+                        #localized("thesis-master", lang)
+                    ]
+                ]   
 
-  b(33mm)[
-    #localized("cvut", lang)\
-    #faculty \
-    #department
-  ]
+                
+            ]
+            #b(35mm)[
+                #grid(columns: (3.5fr, 2fr, 10fr), [
+                    #image("./res/symbol_cvut_konturova_verze_cb.svg", width: 110pt)
+                ],
+                [
+                  #v(10mm)
+                #text(size: 16pt, weight: "medium", fill: blue)[#localized("cvut", lang)]
+                ])
+            ]
+            #b(78mm)[
+                #grid(columns: (3.5fr,5fr,7fr), [
+                #text(size: 32pt, weight: "medium", fill: blue)[F3]
 
-  b(63.5mm)[
-    #image("./res/symbol_cvut_konturova_verze_cb.svg", width: 142pt)
-  ]
+                ],
+                [
+                #text(size: 10.5pt, weight: "medium")[#faculty\ #department]
+                ])
+            ]
 
-  b(131.5mm, size: 12.5pt)[
-    #if bachelor [
-      #localized("thesis-bachelor", lang)
-    ] else [
-      #localized("thesis-master", lang)
-    ]
-  ]
-
-  b(140.7mm, size: 14.8pt, weight: "regular")[
-    #title
-  ]
+        #b(140.7mm, size: 18pt, weight: "regular")[
+            #text(fill: blue)[#title]
+        ]
   
-  b(154.25mm, [
-    #text(size: 12.5pt, style: "italic")[#author.name] \
-
-    \
-    #author.email \
-    #link(author.url)
-  ])
-
-  b(210mm)[#localized("supervisor", lang): #supervisor]
-
-  b(235.2mm)[#localized("study-programme", lang): #study-programme]
-  b(241.2mm)[#localized("branch-of-study", lang): #branch-of-study]
-  
-  b(254.3mm)[#submission-date.display("[month repr:long] [year]")]
+        #b(164.25mm, [
+            #text(size: 14.5pt, weight: "medium")[#author.name] \
+        ])
+        #b(248mm)[
+            #text(size: 10.5pt, weight: "medium")[#localized("supervisor", lang): #supervisor \
+            #localized("study-programme", lang): #study-programme \
+                    #localized("specialization", lang): #study-spec \
+            #submission-date.display("[year]")]
+        ]
+]
+])
 }
 
 
@@ -114,47 +144,52 @@
   acknowledgement: [],
 ) = {
   // render as a separate page; add room at the bottom for TODOs and notes
-  show: page.with(margin: (bottom: 0mm))
+  set page(numbering: "i")
+  counter(page).update(3)
   
-  set heading(outlined: false, bookmarked: false)
+  set heading(
+    outlined: false,
+    bookmarked: false,
+  )
+  show heading: it => [
+    #set text(font: "Technika" ,fill: blue)
+    #it.body
+  ]
+
   // pretty hacky way to disable the implicit linebreak in my heading style
   show heading: it => {
     show pagebreak: it => {linebreak()}
-    block(it)
-    //block(it, above: 2pt)
+    block(it, above: 2pt)
   }
-
-  // no idea why there is a margin here
-  v(-30.2pt)
+  
+  set par(justify: true, spacing: 0.6em, first-line-indent:(amount: 1em, all: true))
   [
+    = #localized("abstract", "cs")
+    #abstract-cz
+    #pagebreak()
     = #localized("abstract", "en")
     #abstract-en
-  ]
-  
-  [
-    = #localized("abstract", "cs") (CZ)
-    #abstract-cz
+    #pagebreak()
   ]
 
   v(6.6pt)
   //v(-6pt)
-  grid(columns: (47.5%, 47.5%), gutter: 5%,
-    [
+    align(horizon)[
       = #localized("acknowledgement", lang)
       #set text(style: "italic")
       #acknowledgement
-    ],
+    ]
+
+    pagebreak(weak: false)
   
-    [
-      = #localized("declaration", lang)
-      #localized("declaration-text", lang)
+    align(bottom)[
+     #align(right)[
+        = #localized("declaration", lang)
+     ]
+      #localized("declaration-text", lang) 
       
         #localized("prague", lang), #submission-date.display("[day]. [month]. [year]")
-
-      #v(2em)
-      #repeat[.]
-    ],
-  )
+    ]
 
   context {
     set text(size: 15pt, weight: "bold")
@@ -179,8 +214,26 @@
   }
 }
 
+#let list_abbr(print, lang, abbrs) = {
+  set heading(
+    outlined: false,
+    bookmarked: false,
+  )
+  [= #localized("abbrs", lang)]
 
-#let introduction(print, submission-date, lang, ..args) = {
+  table(
+    columns: 2,
+    gutter: 2pt,
+    stroke:none,
+    align: (right, left),
+    ..for (k, v) in abbrs {
+      ([#k], v)
+    }
+  )
+}
+
+
+#let introduction(print, submission-date, lang, abbrs, ..args) = {
   // hide empty pages from web version
   if print {
     // assignment must be on a single sheet from both sides
@@ -200,7 +253,26 @@
     // outline should be on the right, but the outline title has a pagebreak
     pagebreak(to: "even")
   }
-  outline(depth: 2)
+
+  show heading: it => [
+    #set text(font: "Technika" ,fill: blue)
+    #it.body
+  ]
+  [
+    #show outline.entry.where(
+        level: 1
+        ): it => {
+          v(12pt, weak: true)
+          strong(text(fill: blue, it))
+      } 
+    #outline(depth: 3)
+  ]
+  pagebreak(weak: true)
+  outline(title: localized("images", lang), target: figure.where(kind: image))
+  outline(title: localized("tables", lang), target: figure.where(kind: table))
+  outline(title: localized("code", lang), target: figure.where(kind: raw))
 
   pagebreak(weak: true)
+  list_abbr(print, lang, abbrs)
+
 }
