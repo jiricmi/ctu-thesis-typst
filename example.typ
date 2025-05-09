@@ -16,8 +16,13 @@
     faculty: "Faculty of Electrical Engineering",
     department: "Department of Measurement",
     study-programme: "Open Informatics",
-    branch-of-study: "Computer Engineering", // studijni obor
-  ),
+    study-spec: "Artifitial inteligence", // studijni obor
+    diff_usage: false, // when true, wont generate abstract etc.
+    abbrs: (
+        "SOP": "Small Outline Package",
+        "TSSOP": "Thin Shrink Small Outline Package"
+    ),
+),
 
   // set to true if generating a PDF for print (shifts page layout, turns code blocks greyscale, correctly aligns odd/even pages,...)
   print: false,
@@ -83,12 +88,13 @@
 #lorem(100)
 
 
-#bibliography("bibliography.bib")
 
 
 // all h1 headings from here on are appendices
-#show: start-appendix
-
+#start-appendix(lang:"en")[
+    = Bibliography
+    #bibliography("bibliography.bib")
+]
 = An example appendix
 
 #lorem(100)
