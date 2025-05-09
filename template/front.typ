@@ -258,8 +258,15 @@
     #set text(font: "Technika" ,fill: blue)
     #it.body
   ]
-  outline(depth: 3)
-
+  [
+    #show outline.entry.where(
+        level: 1
+        ): it => {
+          v(12pt, weak: true)
+          strong(text(fill: blue, it))
+      } 
+    #outline(depth: 3)
+  ]
   pagebreak(weak: true)
   outline(title: localized("images", lang), target: figure.where(kind: image))
   outline(title: localized("tables", lang), target: figure.where(kind: table))
