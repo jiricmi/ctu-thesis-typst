@@ -8,7 +8,8 @@
     "specialization": "Specializace",
     "acknowledgement": "Poděkování",
     "declaration": "Prohlášení",
-    "declaration-text": "Prohlašuji, že jsem předloženou práci vypracoval/a samostatně a že jsem uvedl/a veškeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.",
+    "declaration-text": "Prohlašuji, že jsem závěrečnou práci vypracoval(a) samostatně a uvedl(a) všekeré použité informační zdroje v souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací a Rámcovými pravidly používání umělé inteligence na ČVUT pro studijní a pedagogické účely v Bc a NM studiu.",
+    "ai-declaration-text": "Prohlašuji, že jsem v průběhu příprav a psaní závěrečné práce použil nástroje umělé inteligence. Vygenerovaný obsah jsem ověřil. Stvrzuji, že jsem si vědom, že za obsah závěrečné práce plně zodpovídám.",
     "prague": "v Praze",
     "abstract": "Abstrakt",
     "abbrs": "Seznam zkratek",
@@ -27,6 +28,8 @@
     "acknowledgement": "Acknowledgement",
     "declaration": "Declaration",
     "declaration-text": "I declare that the presented work was developed independently and that I have listed all sources of information used within it in accordance with the methodical instructions for observing the ethical principles in the preparation of university theses.",
+    "ai-declaration-text": "Prohlašuji, že jsem v průběhu příprav a psaní závěrečné práce použil nástroje umělé inteligence.Vygenerovaný
+obsah jsem ověřil. Stvrzuji, že jsem si vědom, že za obsah závěrečné práce plně zodpovídám.",
     "prague": "In Prague",
     "abstract": "Abstract",
     "abbrs": "List of Abbreviations",
@@ -187,8 +190,11 @@
         = #localized("declaration", lang)
      ]
       #localized("declaration-text", lang) 
+
+      #localized("ai-declaration-text", lang)
+        #v(10pt)
       
-        #localized("prague", lang), #submission-date.display("[day]. [month]. [year]")
+      #localized("prague", lang), #submission-date.display("[day]. [month]. [year]")
     ]
 
   context {
