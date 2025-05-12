@@ -152,6 +152,15 @@
     )
 
   }
+  show heading.where(level: 5): it => {
+    grid(
+        columns: 2,
+        gutter: 5pt,
+        align: horizon,
+        text()[#it.body],
+    )
+
+  }
 
   set bibliography(style: "ieee", title: none)
   show bibliography: it => {
