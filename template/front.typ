@@ -164,6 +164,20 @@ obsah jsem ověřil. Stvrzuji, že jsem si vědom, že za obsah závěrečné pr
     show pagebreak: it => {linebreak()}
     block(it, above: 2pt)
   }
+
+  align(bottom)[
+     #align(right)[
+        = #localized("declaration", lang)
+     ]
+      #localized("declaration-text", lang) 
+
+      #localized("ai-declaration-text", lang)
+        #v(10pt)
+      
+      #localized("prague", lang), #submission-date.display("[day]. [month]. [year]")
+    ]
+
+    pagebreak(weak: false)
   
   set par(justify: true, spacing: 0.6em, first-line-indent:(amount: 1em, all: true))
   [
@@ -183,19 +197,8 @@ obsah jsem ověřil. Stvrzuji, že jsem si vědom, že za obsah závěrečné pr
       #acknowledgement
     ]
 
-    pagebreak(weak: false)
   
-    align(bottom)[
-     #align(right)[
-        = #localized("declaration", lang)
-     ]
-      #localized("declaration-text", lang) 
 
-      #localized("ai-declaration-text", lang)
-        #v(10pt)
-      
-      #localized("prague", lang), #submission-date.display("[day]. [month]. [year]")
-    ]
 
   context {
     set text(size: 15pt, weight: "bold")
