@@ -164,9 +164,9 @@
 
   set bibliography(style: "ieee", title: none)
   show bibliography: it => {
-    set text(size: 9pt)
-    set par(justify: false)
-    columns(2, it)
+    set text(size: 11pt)
+    set par(justify: true, spacing: 15pt)
+    columns(1, it)
   }
 
   
