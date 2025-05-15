@@ -169,7 +169,27 @@
     columns(1, it)
   }
 
-  
+let figure_spacing = 1em 
+show figure: it => {
+  if it.placement == none {
+    block(it, inset: (y: figure_spacing))
+  } else if it.placement == top {
+    place(
+      it.placement,
+      float: true,
+      block(width: 100%, align(center, it))
+    )
+  } else if it.placement == bottom {
+    place(
+      it.placement,
+      float: true,
+      block(width: 100%, inset: (top: figure_spacing), align(center, it))
+    )
+  } else {
+        it
+    }
+}
+
 
   // start numbering from the first page of actual text
   set page(numbering: "1")
