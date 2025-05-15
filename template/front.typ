@@ -278,6 +278,7 @@ obsah jsem ověřil. Stvrzuji, že jsem si vědom, že za obsah závěrečné pr
   ]
   pagebreak(weak: true)
   outline(title: localized("images", lang), target: figure.where(kind: image))
+  pagebreak(weak: true)
   outline(title: localized("tables", lang), target: figure.where(kind: table))
   outline(title: localized("code", lang), target: figure.where(kind: raw))
 
